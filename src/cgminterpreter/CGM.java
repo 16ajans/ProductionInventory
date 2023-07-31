@@ -1,6 +1,5 @@
 package cgminterpreter;
 
-import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.DataInput;
@@ -52,7 +51,7 @@ public class CGM {
 		}
 	}
 
-	public Dimension getSize() {
+	public DoubleDimension getSize() {
 
 		Point2D.Double[] extent = extent();
 		if (extent == null)
@@ -72,10 +71,13 @@ public class CGM {
 			}
 		}
 
-		int width = (int) Math.ceil((Math.abs(extent[1].x - extent[0].x) * factor));
-		int height = (int) Math.ceil((Math.abs(extent[1].y - extent[0].y) * factor));
-
-		return new Dimension(width, height);
+//		int width = (int) Math.ceil((Math.abs(extent[1].x - extent[0].x) * factor));
+//		int height = (int) Math.ceil((Math.abs(extent[1].y - extent[0].y) * factor));
+		
+		double x = Math.abs(extent[1].x - extent[0].x) * factor;
+		double y = Math.abs(extent[1].y - extent[0].y) * factor;
+		
+		return new DoubleDimension(x, y);
 	}
 
 	public Point2D.Double[] extent() {

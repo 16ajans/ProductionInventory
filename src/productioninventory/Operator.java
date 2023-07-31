@@ -6,49 +6,49 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import cgminterpreter.CGM;
+import cgminterpreter.DoubleDimension;
 
 public class Operator {
 
 	public static void main(String... args) throws IOException {
 
 		String hapShareLetter = "T:/";
+		List<String> haps = List.of("Auburn", "Everett", "St_Louis");
 
-		List<String> tifDirs = List.of("Auburn/TIFF", "Everett/TIFF", "St_Louis/TIFF").parallelStream()
-				.map(dir -> hapShareLetter + dir).collect(Collectors.toList());
-		List<String> cgmDirs = List.of("Auburn/CGM", "Everett/CGM", "St_Louis/CGM").parallelStream()
-				.map(dir -> hapShareLetter + dir).collect(Collectors.toList());
-
-		tifDirs.parallelStream().map(Paths::get).flatMap(t -> {
-			try {
-				return Files.walk(t);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return Stream.empty();
-			}
-		}).filter(Files::isRegularFile).filter(tif -> tif.toString().toLowerCase().endsWith("tif")).map(Path::toFile)
-				.map(tif -> TIFWhisperer.getDimensions(tif) + tif.getPath().toString()).forEach(System.out::println);
-
-		cgmDirs.parallelStream().map(Paths::get).flatMap(t -> {
-			try {
-				return Files.walk(t);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return Stream.empty();
-			}
-		}).filter(Files::isRegularFile).filter(cgm -> cgm.toString().toLowerCase().endsWith("cgm")).map(Path::toFile)
-				.map(file -> {
-					try {
-						return new CGM(file);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return null;
-				}).filter(Objects::nonNull).map(cgm -> cgm.getSize() + cgm.getPath().toString())
-				.forEach(System.out::println);
+		for (String hap : haps) {
+			hap = hapShareLetter + hap;
+			System.out.println(hap);
+			Files.find(Paths.get(hap + "/CGM"), Integer.MAX_VALUE,
+					(path, attr) -> path.toString().toLowerCase().endsWith("cgm") && attr.isRegularFile()).parallel()
+					.map(Path::toFile).map(file -> {
+						try {
+							return new CGM(file);
+						} catch (IOException e) {
+							e.printStackTrace();
+							return null;
+						}
+					}).filter(Objects::nonNull).forEach(cgm -> {
+						DoubleDimension ddim = cgm.getSize();
+						System.out.print(ddim.toString());
+						if (ddim.getWidth() > 35.08 || ddim.getHeight() > 120.0)
+							System.out.print(" OVERSIZE ");
+						else
+							System.out.print("          ");
+						System.out.println(cgm.getPath().getFileName());
+					});
+			Files.find(Paths.get(hap + "/TIFF"), Integer.MAX_VALUE,
+					(path, attr) -> path.toString().toLowerCase().endsWith("tif") && attr.isRegularFile()).parallel()
+					.map(Path::toFile).forEach(tif -> {
+						DoubleDimension ddim = TIFWhisperer.getDimensions(tif);
+						System.out.print(ddim.toString());
+						if (ddim.getWidth() > 35.08 || ddim.getHeight() > 120.0)
+							System.out.print(" OVERSIZE ");
+						else
+							System.out.print("          ");
+						System.out.println(tif.getName());
+					});
+		}
 	}
-
 }

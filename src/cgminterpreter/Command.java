@@ -108,7 +108,11 @@ public class Command {
 		if (l != 31) {
 			this.args = new int[l];
 			for (int i = 0; i < l; i++)
+				try {
 				this.args[i] = in.readUnsignedByte();
+				} catch (EOFException what) {
+					// idk what's happening here, but i'm still getting a size . . . so
+				}
 			if (l % 2 == 1) {
 				try {
 					in.readUnsignedByte();

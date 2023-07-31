@@ -1,6 +1,5 @@
 package productioninventory;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -13,17 +12,19 @@ import org.apache.commons.imaging.ImageInfo;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 
-public class TIFWhisperer {
-	static Dimension getDimensions(File tif) {
-		Dimension pixels = null;
+import cgminterpreter.DoubleDimension;
 
+public class TIFWhisperer {
+	static DoubleDimension getDimensions(File tif) {
+		DoubleDimension pixels = null;
+		
 		try (ImageInputStream in = ImageIO.createImageInputStream(tif)) {
 			final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
 			if (readers.hasNext()) {
 				ImageReader reader = readers.next();
 				try {
 					reader.setInput(in);
-					pixels = new Dimension(reader.getWidth(0), reader.getHeight(0));
+					pixels = new DoubleDimension(reader.getWidth(0), reader.getHeight(0));
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally {
@@ -46,7 +47,7 @@ public class TIFWhisperer {
 			e.printStackTrace();
 		}
 
-		return new Dimension((int) Math.ceil(pixels.getWidth() / widthDPI),
-				(int) Math.ceil(pixels.getHeight() / heightDPI));
+		return new DoubleDimension(pixels.getWidth() / widthDPI,
+				pixels.getHeight() / heightDPI);
 	}
 }
