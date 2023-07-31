@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import cgminterpreter.ScalingMode.Mode;
+
 public class CGM {
 	Path path;
 	
@@ -51,12 +53,27 @@ public class CGM {
 	}
 	
 	public Dimension getSize() {
+		
 		Point2D.Double[] extent = extent();
 		if (extent == null)
 			return null;
+		
+		double factor = 1;
 
-		int width = (int)Math.ceil((Math.abs(extent[1].x - extent[0].x) / 25.4));
-		int height = (int)Math.ceil((Math.abs(extent[1].y - extent[0].y) / 25.4));
+		ScalingMode scalingMode = getScalingMode();
+		if (scalingMode != null) {
+			Mode mode = scalingMode.getMode();
+			if (ScalingMode.Mode.METRIC.equals(mode)) {
+				double metricScalingFactor = scalingMode.getMetricScalingFactor();
+				if (metricScalingFactor != 0) {
+					// 1 inch = 25,4 millimeter
+					factor = (metricScalingFactor) / 25.4;
+				}
+			}
+		}
+
+		int width = (int)Math.ceil((Math.abs(extent[1].x - extent[0].x) * factor));
+		int height = (int)Math.ceil((Math.abs(extent[1].y - extent[0].y) * factor));
 
 		return new Dimension(width, height);
 	}
@@ -71,14 +88,14 @@ public class CGM {
 		return null;
 	}
 	
-//	private ScalingMode getScalingMode() {
-//		for (Command c : this.commands) {
-//			if (c instanceof ScalingMode) {
-//				return (ScalingMode)c;
-//			}
-//		}
-//		return null;
-//	}
+	private ScalingMode getScalingMode() {
+		for (Command c : this.commands) {
+			if (c instanceof ScalingMode) {
+				return (ScalingMode)c;
+			}
+		}
+		return null;
+	}
 	
 	public Path getPath() {
 		return path;
