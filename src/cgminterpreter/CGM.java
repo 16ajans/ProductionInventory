@@ -55,8 +55,8 @@ public class CGM {
 		if (extent == null)
 			return null;
 
-		int width = (int)Math.ceil((Math.abs(extent[1].x - extent[0].x)));
-		int height = (int)Math.ceil((Math.abs(extent[1].y - extent[0].y)));
+		int width = (int)Math.ceil((Math.abs(extent[1].x - extent[0].x) / 25.4));
+		int height = (int)Math.ceil((Math.abs(extent[1].y - extent[0].y) / 25.4));
 
 		return new Dimension(width, height);
 	}
