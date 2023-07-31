@@ -47,7 +47,8 @@ public class Operator {
 						e.printStackTrace();
 					}
 					return null;
-				}).filter(Objects::nonNull).map(cgm -> cgm.getSize() + cgm.getPath().toString()).forEach(System.out::println);
+				}).filter(Objects::nonNull).map(cgm -> cgm.getSize() + cgm.getPath().toString())
+				.forEach(System.out::println);
 	}
 
 }

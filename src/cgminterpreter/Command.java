@@ -222,7 +222,7 @@ public class Command {
 	}
 
 	final protected double makeVdc() {
-	
+
 		if (this.cgm.getVdcType().equals(VDCType.Type.REAL)) {
 			VDCRealPrecision.Type precision = this.cgm.getVdcRealPrecision();
 			if (precision.equals(VDCRealPrecision.Type.FIXED_POINT_32BIT)) {

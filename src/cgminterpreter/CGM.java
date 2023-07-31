@@ -17,7 +17,7 @@ import cgminterpreter.ScalingMode.Mode;
 
 public class CGM {
 	Path path;
-	
+
 	List<Command> commands;
 
 	private int integerPrecision = 16;
@@ -51,13 +51,13 @@ public class CGM {
 			commands.add(c);
 		}
 	}
-	
+
 	public Dimension getSize() {
-		
+
 		Point2D.Double[] extent = extent();
 		if (extent == null)
 			return null;
-		
+
 		double factor = 1;
 
 		ScalingMode scalingMode = getScalingMode();
@@ -72,12 +72,12 @@ public class CGM {
 			}
 		}
 
-		int width = (int)Math.ceil((Math.abs(extent[1].x - extent[0].x) * factor));
-		int height = (int)Math.ceil((Math.abs(extent[1].y - extent[0].y) * factor));
+		int width = (int) Math.ceil((Math.abs(extent[1].x - extent[0].x) * factor));
+		int height = (int) Math.ceil((Math.abs(extent[1].y - extent[0].y) * factor));
 
 		return new Dimension(width, height);
 	}
-	
+
 	public Point2D.Double[] extent() {
 		for (Command c : this.commands) {
 			if (c instanceof VDCExtent) {
@@ -87,16 +87,16 @@ public class CGM {
 		}
 		return null;
 	}
-	
+
 	private ScalingMode getScalingMode() {
 		for (Command c : this.commands) {
 			if (c instanceof ScalingMode) {
-				return (ScalingMode)c;
+				return (ScalingMode) c;
 			}
 		}
 		return null;
 	}
-	
+
 	public Path getPath() {
 		return path;
 	}
@@ -140,7 +140,7 @@ public class CGM {
 	public void setVdcRealPrecision(VDCRealPrecision.Type vdcRealPrecision) {
 		this.vdcRealPrecision = vdcRealPrecision;
 	}
-	
+
 	boolean hasVDCRealPrecisionBeenProcessed() {
 		return this.vdcRealPrecisionProcessed;
 	}

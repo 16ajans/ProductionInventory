@@ -16,7 +16,7 @@ import org.apache.commons.imaging.Imaging;
 public class TIFWhisperer {
 	static Dimension getDimensions(File tif) {
 		Dimension pixels = null;
-		
+
 		try (ImageInputStream in = ImageIO.createImageInputStream(tif)) {
 			final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
 			if (readers.hasNext()) {
@@ -36,16 +36,17 @@ public class TIFWhisperer {
 
 		int widthDPI = 1;
 		int heightDPI = 1;
-		
+
 		try {
 			final ImageInfo imageInfo = Imaging.getImageInfo(tif);
-			
+
 			widthDPI = imageInfo.getPhysicalWidthDpi();
 			heightDPI = imageInfo.getPhysicalHeightDpi();
 		} catch (ImageReadException | IOException e) {
 			e.printStackTrace();
 		}
 
-		return new Dimension((int)Math.ceil(pixels.getWidth() / widthDPI), (int)Math.ceil(pixels.getHeight() / heightDPI));
+		return new Dimension((int) Math.ceil(pixels.getWidth() / widthDPI),
+				(int) Math.ceil(pixels.getHeight() / heightDPI));
 	}
 }
