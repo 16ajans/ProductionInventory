@@ -43,7 +43,10 @@ public class RealPrecision extends Command {
 		}
 
 		cgm.setRealPrecision(precision);
-		cgm.setVdcRealPrecision(vdcPrecision);
 		cgm.setRealPrecisionProcessed(true);
+		
+		if (!cgm.hasVDCRealPrecisionBeenProcessed()) {
+			cgm.setVdcRealPrecision(vdcPrecision);
+		}
 	}
 }

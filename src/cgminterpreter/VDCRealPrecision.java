@@ -38,5 +38,6 @@ public class VDCRealPrecision extends Command {
 		}
 
 		cgm.setVdcRealPrecision(precision);
+		cgm.setVDCRealPrecisionProcessed(true);
 	}
 }

@@ -9,21 +9,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CGM {
+	Path path;
+	
 	List<Command> commands;
 
 	private int integerPrecision = 16;
 	private RealPrecision.Precision realPrecision = RealPrecision.Precision.FIXED_32;
+	private boolean realPrecisionProcessed = false;
 
 	private VDCType.Type vdcType = VDCType.Type.INTEGER;
 	private int vdcIntegerPrecision = 16;
 	private VDCRealPrecision.Type vdcRealPrecision = VDCRealPrecision.Type.FIXED_POINT_32BIT;
-	private boolean realPrecisionProcessed = false;
+	private boolean vdcRealPrecisionProcessed = false;
 
 	public CGM(File cgmFile) throws IOException {
+		path = cgmFile.toPath();
 		InputStream inputStream = new FileInputStream(cgmFile);
 //		String cgmFilename = cgmFile.getName();
 		DataInputStream in = new DataInputStream(new BufferedInputStream(inputStream));
@@ -74,6 +79,10 @@ public class CGM {
 //		}
 //		return null;
 //	}
+	
+	public Path getPath() {
+		return path;
+	}
 
 	int getIntegerPrecision() {
 		return this.integerPrecision;
@@ -113,6 +122,14 @@ public class CGM {
 
 	public void setVdcRealPrecision(VDCRealPrecision.Type vdcRealPrecision) {
 		this.vdcRealPrecision = vdcRealPrecision;
+	}
+	
+	boolean hasVDCRealPrecisionBeenProcessed() {
+		return this.vdcRealPrecisionProcessed;
+	}
+
+	void setVDCRealPrecisionProcessed(boolean vdcRealPrecisionProcessed) {
+		this.vdcRealPrecisionProcessed = vdcRealPrecisionProcessed;
 	}
 
 	int getVdcIntegerPrecision() {

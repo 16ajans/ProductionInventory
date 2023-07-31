@@ -22,15 +22,15 @@ public class Operator {
 		List<String> cgmDirs = List.of("Auburn/CGM", "Everett/CGM", "St_Louis/CGM").parallelStream()
 				.map(dir -> hapShareLetter + dir).collect(Collectors.toList());
 
-		tifDirs.parallelStream().map(Paths::get).flatMap(t -> {
-			try {
-				return Files.walk(t);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return Stream.empty();
-			}
-		}).filter(Files::isRegularFile).filter(cgm -> cgm.toString().toLowerCase().endsWith("tif")).map(Path::toFile)
-				.map(TIFWhisperer::getDimensions).forEach(System.out::println);
+//		tifDirs.parallelStream().map(Paths::get).flatMap(t -> {
+//			try {
+//				return Files.walk(t);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				return Stream.empty();
+//			}
+//		}).filter(Files::isRegularFile).filter(cgm -> cgm.toString().toLowerCase().endsWith("tif")).map(Path::toFile)
+//				.map(TIFWhisperer::getDimensions).forEach(System.out::println);
 
 		cgmDirs.parallelStream().map(Paths::get).flatMap(t -> {
 			try {
@@ -47,7 +47,7 @@ public class Operator {
 						e.printStackTrace();
 					}
 					return null;
-				}).filter(Objects::nonNull).map(cgm -> cgm.getSize()).forEach(System.out::println);
+				}).filter(Objects::nonNull).map(cgm -> cgm.getSize() + cgm.getPath().toString()).forEach(System.out::println);
 	}
 
 }
