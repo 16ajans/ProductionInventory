@@ -1,7 +1,7 @@
 package productioninventory;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -14,8 +14,8 @@ import org.w3c.dom.Node;
 
 import cgminterpreter.DoubleDimension;
 
-public class TIFWhisperer {
-	static DoubleDimension getDimensions(File tif) {
+public class TIFLink {
+	static DoubleDimension getDimensions(Path tif) {
 		DoubleDimension pixels = null;
 		Double widthMMpPixel = 1.0;
 		Double heightMMpPixel = 1.0;
