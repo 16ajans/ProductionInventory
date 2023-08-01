@@ -32,7 +32,7 @@ public class Operator {
 					}).filter(Objects::nonNull).forEach(cgm -> {
 						DoubleDimension ddim = cgm.getSize();
 						System.out.print(ddim.toString());
-						if (ddim.getWidth() > 35.08 || ddim.getHeight() > 120.0)
+						if (Math.round(ddim.getWidth()) > 36 || ddim.getHeight() > 145)
 							System.out.print(" OVERSIZE ");
 						else
 							System.out.print("          ");
@@ -43,7 +43,7 @@ public class Operator {
 					.map(Path::toFile).forEach(tif -> {
 						DoubleDimension ddim = TIFWhisperer.getDimensions(tif);
 						System.out.print(ddim.toString());
-						if (ddim.getWidth() > 35.08 || ddim.getHeight() > 120.0)
+						if (ddim.getWidth() > 36 && ddim.getHeight() > 36)
 							System.out.print(" OVERSIZE ");
 						else
 							System.out.print("          ");
