@@ -5,19 +5,14 @@ import java.util.List;
 
 public class Operator {
 
-	public static void main(String... args) throws IOException {
+	public static void main(String... args) throws IOException, InterruptedException {
 
 		String hapShareLetter = "T:/";
 		List<String> haps = List.of("Auburn", "Everett", "St_Louis");
-	
-		Parallelizer parallelizer = new Parallelizer(hapShareLetter, haps);
-		parallelizer.start();
-		try {
-			parallelizer.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+
+		for (String hap : haps) {
+			Dispatch dispatch = new Dispatch(hapShareLetter + hap);
+			dispatch.resolve();
 		}
-		
-		System.out.println(parallelizer.getFoundFiles());
 	}
 }
