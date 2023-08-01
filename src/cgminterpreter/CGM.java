@@ -36,7 +36,7 @@ public class CGM {
 		}
 	}
 
-	public CGM(Path cgmFile) throws IOException {
+	private CGM(Path cgmFile) throws IOException {
 		commands = new ArrayList<Command>(500);
 		path = cgmFile;
 		InputStream inputStream = new FileInputStream(cgmFile.toFile());
@@ -46,7 +46,7 @@ public class CGM {
 		in.close();
 	}
 
-	public void read(DataInput in) throws IOException {
+	private void read(DataInput in) throws IOException {
 		boolean extent = false;
 		boolean scaling = false;
 
@@ -99,7 +99,7 @@ public class CGM {
 		return new DoubleDimension(x, y);
 	}
 
-	public Point2D.Double[] extent() {
+	private Point2D.Double[] extent() {
 		for (Command c : this.commands) {
 			if (c instanceof VDCExtent) {
 				Point2D.Double[] extent = ((VDCExtent) c).extent();
@@ -154,11 +154,11 @@ public class CGM {
 		this.realPrecisionProcessed = realPrecisionProcessed;
 	}
 
-	public VDCRealPrecision.Type getVdcRealPrecision() {
+	VDCRealPrecision.Type getVdcRealPrecision() {
 		return this.vdcRealPrecision;
 	}
 
-	public void setVdcRealPrecision(VDCRealPrecision.Type vdcRealPrecision) {
+	void setVdcRealPrecision(VDCRealPrecision.Type vdcRealPrecision) {
 		this.vdcRealPrecision = vdcRealPrecision;
 	}
 
