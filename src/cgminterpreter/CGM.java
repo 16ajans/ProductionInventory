@@ -29,6 +29,7 @@ public class CGM {
 	private boolean vdcRealPrecisionProcessed = false;
 
 	public CGM(File cgmFile) throws IOException {
+		commands = new ArrayList<Command>(500);
 		path = cgmFile.toPath();
 		InputStream inputStream = new FileInputStream(cgmFile);
 //		String cgmFilename = cgmFile.getName();
@@ -38,7 +39,8 @@ public class CGM {
 	}
 
 	public void read(DataInput in) throws IOException {
-		commands = new ArrayList<>();
+		boolean extent = false;
+		boolean scaling = false;
 
 		while (true) {
 			Command c = Command.read(in, this);
@@ -48,6 +50,15 @@ public class CGM {
 			}
 
 			commands.add(c);
+
+			if (c instanceof VDCExtent)
+				extent = true;
+
+			if (c instanceof ScalingMode)
+				scaling = true;
+
+			if (scaling && extent)
+				break;
 		}
 	}
 
@@ -73,10 +84,10 @@ public class CGM {
 
 //		int width = (int) Math.ceil((Math.abs(extent[1].x - extent[0].x) * factor));
 //		int height = (int) Math.ceil((Math.abs(extent[1].y - extent[0].y) * factor));
-		
+
 		double x = Math.abs(extent[1].x - extent[0].x) * factor;
 		double y = Math.abs(extent[1].y - extent[0].y) * factor;
-		
+
 		return new DoubleDimension(x, y);
 	}
 
