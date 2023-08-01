@@ -14,13 +14,27 @@ import org.w3c.dom.Node;
 
 import cgminterpreter.DoubleDimension;
 
-public class TIFLink {
-	static DoubleDimension getDimensions(Path tif) {
+public class TIF {
+	Path path;
+	
+	static TIF parse(Path path) {
+		return new TIF(path);
+	}
+	
+	private TIF(Path path) {
+		this.path = path;
+	}
+	
+	Path getPath() {
+		return path;
+	}
+	
+	DoubleDimension getSize() {
 		DoubleDimension pixels = null;
 		Double widthMMpPixel = 1.0;
 		Double heightMMpPixel = 1.0;
 		
-		try (ImageInputStream in = ImageIO.createImageInputStream(tif)) {
+		try (ImageInputStream in = ImageIO.createImageInputStream(path)) {
 			final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
 			if (readers.hasNext()) {
 				ImageReader reader = readers.next();
@@ -50,4 +64,6 @@ public class TIFLink {
 		return new DoubleDimension(pixels.getWidth() * (widthMMpPixel / 25.4),
 				pixels.getHeight() * (heightMMpPixel / 25.4));
 	}
+	
+	
 }
