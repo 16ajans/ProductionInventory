@@ -33,8 +33,8 @@ public class TIF {
 		DoubleDimension pixels = null;
 		Double widthMMpPixel = 1.0;
 		Double heightMMpPixel = 1.0;
-		
-		try (ImageInputStream in = ImageIO.createImageInputStream(path)) {
+				
+		try (ImageInputStream in = ImageIO.createImageInputStream(path.toFile())) {
 			final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
 			if (readers.hasNext()) {
 				ImageReader reader = readers.next();
