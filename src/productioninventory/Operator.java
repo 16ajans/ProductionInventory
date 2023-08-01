@@ -22,14 +22,7 @@ public class Operator {
 			System.out.println(hap);
 			Files.find(Paths.get(hap + "/CGM"), Integer.MAX_VALUE,
 					(path, attr) -> path.toString().toLowerCase().endsWith("cgm") && attr.isRegularFile()).parallel()
-					.map(Path::toFile).map(file -> {
-						try {
-							return new CGM(file);
-						} catch (IOException e) {
-							e.printStackTrace();
-							return null;
-						}
-					}).filter(Objects::nonNull).forEach(cgm -> {
+					.map(Path::toFile).map(CGM::parse).forEach(cgm -> {
 						DoubleDimension ddim = cgm.getSize();
 						System.out.print(ddim.toString());
 						if (Math.round(ddim.getWidth()) > 36 || ddim.getHeight() > 145)

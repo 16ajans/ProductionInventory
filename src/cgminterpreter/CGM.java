@@ -27,6 +27,15 @@ public class CGM {
 	private int vdcIntegerPrecision = 16;
 	private VDCRealPrecision.Type vdcRealPrecision = VDCRealPrecision.Type.FIXED_POINT_32BIT;
 	private boolean vdcRealPrecisionProcessed = false;
+	
+	public static CGM parse(File cgmFile) {
+		try {
+			return new CGM(cgmFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public CGM(File cgmFile) throws IOException {
 		commands = new ArrayList<Command>(500);
