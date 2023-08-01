@@ -4,7 +4,6 @@ import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,7 @@ public class CGM {
 	private VDCRealPrecision.Type vdcRealPrecision = VDCRealPrecision.Type.FIXED_POINT_32BIT;
 	private boolean vdcRealPrecisionProcessed = false;
 	
-	public static CGM parse(File cgmFile) {
+	public static CGM parse(Path cgmFile) {
 		try {
 			return new CGM(cgmFile);
 		} catch (IOException e) {
@@ -37,10 +36,10 @@ public class CGM {
 		}
 	}
 
-	public CGM(File cgmFile) throws IOException {
+	public CGM(Path cgmFile) throws IOException {
 		commands = new ArrayList<Command>(500);
-		path = cgmFile.toPath();
-		InputStream inputStream = new FileInputStream(cgmFile);
+		path = cgmFile;
+		InputStream inputStream = new FileInputStream(cgmFile.toFile());
 //		String cgmFilename = cgmFile.getName();
 		DataInputStream in = new DataInputStream(new BufferedInputStream(inputStream));
 		read(in);
