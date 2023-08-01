@@ -15,12 +15,4 @@
       </plugin>
     </plugins>
   </build>
-  
-  <dependencies>
-	<dependency>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-imaging</artifactId>
-		<version>1.0-alpha3</version>
-		</dependency>
-  </dependencies>
 </project>

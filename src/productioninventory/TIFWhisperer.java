@@ -6,17 +6,19 @@ import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 
-import org.apache.commons.imaging.ImageInfo;
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.Imaging;
+import org.w3c.dom.Node;
 
 import cgminterpreter.DoubleDimension;
 
 public class TIFWhisperer {
 	static DoubleDimension getDimensions(File tif) {
 		DoubleDimension pixels = null;
+		Double widthMMpPixel = 1.0;
+		Double heightMMpPixel = 1.0;
 		
 		try (ImageInputStream in = ImageIO.createImageInputStream(tif)) {
 			final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
@@ -24,6 +26,16 @@ public class TIFWhisperer {
 				ImageReader reader = readers.next();
 				try {
 					reader.setInput(in);
+					
+					IIOMetadata metadata = reader.getImageMetadata(0);
+					IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree("javax_imageio_1.0");
+					
+			        Node dpcWidth = (IIOMetadataNode) root.getElementsByTagName("HorizontalPixelSize").item(0).getAttributes().item(0);			        
+			        Node dpcHeight = (IIOMetadataNode) root.getElementsByTagName("VerticalPixelSize").item(0).getAttributes().item(0);
+			        
+			        widthMMpPixel = Double.valueOf(dpcWidth.getNodeValue());
+			        heightMMpPixel = Double.valueOf(dpcHeight.getNodeValue());
+					
 					pixels = new DoubleDimension(reader.getWidth(0), reader.getHeight(0));
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -35,19 +47,7 @@ public class TIFWhisperer {
 			e1.printStackTrace();
 		}
 
-		int widthDPI = 1;
-		int heightDPI = 1;
-
-		try {
-			final ImageInfo imageInfo = Imaging.getImageInfo(tif);
-
-			widthDPI = imageInfo.getPhysicalWidthDpi();
-			heightDPI = imageInfo.getPhysicalHeightDpi();
-		} catch (ImageReadException | IOException e) {
-			e.printStackTrace();
-		}
-
-		return new DoubleDimension(pixels.getWidth() / widthDPI,
-				pixels.getHeight() / heightDPI);
+		return new DoubleDimension(pixels.getWidth() * (widthMMpPixel / 25.4),
+				pixels.getHeight() * (heightMMpPixel / 25.4));
 	}
 }
