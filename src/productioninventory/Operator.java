@@ -7,11 +7,11 @@ public class Operator {
 
 	public static void main(String... args) throws IOException, InterruptedException {
 
-		String hapShareLetter = "T:/";
+		String hapShare = "//Mw/wch-mil/PEDS_HAP_SHARE/";
 		List<String> haps = List.of("Auburn", "Everett", "St_Louis");
 
 		for (String hap : haps) {
-			Dispatch dispatch = new Dispatch(hapShareLetter + hap);
+			Dispatch dispatch = new Dispatch(hapShare + hap);
 			dispatch.resolve();
 		}
 	}
