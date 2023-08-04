@@ -14,10 +14,10 @@ public class ServiceWorker implements Runnable {
 	enum Type {
 		CGM, TIF
 	}
-	
+
 	ServiceWorker.Type type;
 	private String hapRoot;
-	
+
 	private Map<Path, DoubleDimension> entries;
 
 	@Override
@@ -26,9 +26,10 @@ public class ServiceWorker implements Runnable {
 		case CGM:
 			try {
 				System.out.println(String.format("Started parsing CGMs in %s", hapRoot.toString()));
-				entries = Files.find(Paths.get(hapRoot + "/CGM"), Integer.MAX_VALUE,
-						(path, attr) -> path.toString().toLowerCase().endsWith("cgm") && attr.isRegularFile()).parallel().map(CGM::parse)
-						.collect(Collectors.toMap(CGM::getPath, CGM::getSize));
+				entries = Files
+						.find(Paths.get(hapRoot + "/CGM"), Integer.MAX_VALUE,
+								(path, attr) -> path.toString().toLowerCase().endsWith("cgm") && attr.isRegularFile())
+						.parallel().map(CGM::parse).collect(Collectors.toMap(CGM::getPath, CGM::getSize));
 				System.out.println(String.format("Finished parsing CGMs in %s", hapRoot.toString()));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -37,17 +38,18 @@ public class ServiceWorker implements Runnable {
 		case TIF:
 			try {
 				System.out.println(String.format("Started parsing TIFs in %s", hapRoot.toString()));
-				entries = Files.find(Paths.get(hapRoot + "/TIFF"), Integer.MAX_VALUE,
-						(path, attr) -> path.toString().toLowerCase().endsWith("tif") && attr.isRegularFile()).parallel().map(TIF::parse)
-						.collect(Collectors.toMap(TIF::getPath, TIF::getSize));
+				entries = Files
+						.find(Paths.get(hapRoot + "/TIFF"), Integer.MAX_VALUE,
+								(path, attr) -> path.toString().toLowerCase().endsWith("tif") && attr.isRegularFile())
+						.parallel().map(TIF::parse).collect(Collectors.toMap(TIF::getPath, TIF::getSize));
 				System.out.println(String.format("Finished parsing TIFs in %s", hapRoot.toString()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			break;
-		}		
+		}
 	}
-	
+
 	ServiceWorker(Type type, String hapRoot) {
 		this.type = type;
 		this.hapRoot = hapRoot;
@@ -56,7 +58,7 @@ public class ServiceWorker implements Runnable {
 	public Map<Path, DoubleDimension> getEntries() {
 		return entries;
 	}
-	
+
 	public String getHAPRoot() {
 		return hapRoot;
 	}

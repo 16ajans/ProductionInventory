@@ -20,13 +20,13 @@ public class Dispatch {
 		timestamp = LocalDateTime.now();
 		for (Thread thread : threads)
 			thread.join();
-		
+
 		Writer.write(hapRoot, timestamp, workers);
 	}
 
 	Dispatch(String hapRoot) {
 		this.hapRoot = hapRoot;
-		
+
 		workers = new ArrayList<ServiceWorker>();
 		threads = new ArrayList<Thread>();
 

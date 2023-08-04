@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +56,8 @@ public class Writer {
 			}
 		}
 		out.println("\nTOTAL INCHES:          TOTAL DRAWINGS:");
-		out.println(String.format("%" + 13 + "s", df.format(length)) + String.format("%" + 25 + "s", Integer.toString(count)));
+		out.println(String.format("%" + 13 + "s", df.format(length))
+				+ String.format("%" + 25 + "s", Integer.toString(count)));
 		out.println("\nRETRIEVED: " + timestamp.format(formatter));
 
 		out.close();

@@ -26,7 +26,7 @@ public class CGM {
 	private int vdcIntegerPrecision = 16;
 	private VDCRealPrecision.Type vdcRealPrecision = VDCRealPrecision.Type.FIXED_POINT_32BIT;
 	private boolean vdcRealPrecisionProcessed = false;
-	
+
 	public static CGM parse(Path cgmFile) {
 		try {
 			return new CGM(cgmFile);
