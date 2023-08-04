@@ -15,7 +15,7 @@ public class ServiceWorker implements Runnable {
 		CGM, TIF
 	}
 	
-	private ServiceWorker.Type type;
+	ServiceWorker.Type type;
 	private String hapRoot;
 	
 	private Map<Path, DoubleDimension> entries;
