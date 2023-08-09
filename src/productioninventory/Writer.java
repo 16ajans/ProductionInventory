@@ -24,8 +24,8 @@ public class Writer {
 		double length = 0.0;
 //		int oversize = 0;
 		int count = 0;
-		PrintWriter out = new PrintWriter(
-				new BufferedWriter(new FileWriter("C:/temp/inventory" + hapRoot.split("/")[5] + "_" + timestamp.format(fileName) + ".txt")));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
+				"C:/temp/inventory" + timestamp.format(fileName) + "_" + hapRoot.split("/")[5] + ".txt")));
 
 		out.println(hapRoot);
 		for (ServiceWorker worker : data) {
