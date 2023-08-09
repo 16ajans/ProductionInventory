@@ -17,6 +17,7 @@ public class Writer {
 
 	static DecimalFormat df = new DecimalFormat("0.00");
 	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+	static DateTimeFormatter fileName = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HHmm");
 
 	static void write(String hapRoot, LocalDateTime timestamp, List<ServiceWorker> data) throws IOException {
 
@@ -24,7 +25,7 @@ public class Writer {
 //		int oversize = 0;
 		int count = 0;
 		PrintWriter out = new PrintWriter(
-				new BufferedWriter(new FileWriter("C:/temp/inventory" + hapRoot.split("/")[5] + ".txt")));
+				new BufferedWriter(new FileWriter("C:/temp/inventory" + hapRoot.split("/")[5] + "_" + timestamp.format(fileName) + ".txt")));
 
 		out.println(hapRoot);
 		for (ServiceWorker worker : data) {
